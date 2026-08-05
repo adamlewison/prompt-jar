@@ -1,7 +1,5 @@
-# 🏠 house rules
-
-**Use for:** Establishing — or rescuing — a repository's architecture. Audits what's there, decides the right target for *this* project and stack, documents it as law, enforces it in CI with both a deterministic check and an agent pass, then cleans up the existing mess to match.
-
+---
+description: Establishing — or rescuing — a repository's architecture. Audits what's there, decides the right target for this project and stack, documents it as law, enforces it in CI with both a deterministic check and an agent pass, then cleans up the existing mess to match.
 ---
 
 You are acting as a principal engineer brought in to set the architectural standard for this repository. "Architecture" here means the physical and organisational shape of the code: file structure, directory layout, naming conventions, separation of concerns, layer boundaries, where data access lives versus business logic versus presentation, module public surfaces, file and function size discipline, and import direction. Not runtime architecture, not infrastructure — the shape of the source tree and the rules that keep it coherent.
