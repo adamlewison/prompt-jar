@@ -12,8 +12,8 @@ See [`prompts/TEMPLATE.md`](./prompts/TEMPLATE.md) for the format.
 
 | Prompt | Use for |
 |---|---|
-| [🏠 house-rules](./prompts/house-rules.md) | Auditing, defining, enforcing and remediating a repo's architecture — file structure, naming, layer boundaries, size discipline |
-| [✍️ house-style](./prompts/house-style.md) | Writing a senior-engineering code standard into a repo's `CLAUDE.md` — documentation shape, call-stack depth, types, subagent delegation |
+| [⚖️ lay-down-the-law](./prompts/lay-down-the-law.md) | Auditing, defining, enforcing and remediating a repo's architecture — file structure, naming, layer boundaries, size discipline |
+| [🚀 level-up](./prompts/level-up.md) | Writing a senior-engineering code standard into a repo's `CLAUDE.md` — documentation shape, call-stack depth, types, subagent delegation |
 
 ## Install
 
@@ -21,7 +21,7 @@ See [`prompts/TEMPLATE.md`](./prompts/TEMPLATE.md) for the format.
 curl -fsSL https://raw.githubusercontent.com/adamlewison/prompt-jar/main/install.sh | bash
 ```
 
-This symlinks every prompt into `~/.claude/commands/`, so each one becomes a slash command — `/house-rules`, etc. — available in **any** project's Claude Code session, not just this repo. It's idempotent, so re-run it any time to pick up new or updated prompts.
+This symlinks every prompt into `~/.claude/commands/`, so each one becomes a slash command — `/lay-down-the-law`, etc. — available in **any** project's Claude Code session, not just this repo. It's idempotent, so re-run it any time to pick up new or updated prompts.
 
 Already have a local clone? Run `./install.sh` from the repo root instead — same effect, no re-cloning.
 
@@ -30,7 +30,7 @@ Already have a local clone? Run `./install.sh` from the repo root instead — sa
 Once installed, just invoke a prompt by name in any Claude Code session:
 
 ```
-/house-rules
+/lay-down-the-law
 ```
 
 You can still grab a prompt manually without installing, e.g.:
