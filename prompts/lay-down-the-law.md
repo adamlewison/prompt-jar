@@ -32,7 +32,7 @@ Produce a written audit of what exists. No recommendations yet, no changes.
 - Where business logic lives, and whether it's reachable without the framework.
 - Cross-layer and upward imports, circular dependencies, barrel files, deep relative import chains (`../../../`).
 - Server/client boundary markers and how they're distributed.
-- Test file placement convention and adherence.
+- Test file placement convention and adherence, split by test kind (unit / integration / e2e). Where the shared test harness lives — factories, mocks, render helpers, DB setup — and whether it's one home or scattered.
 - Component organisation: shared vs. feature-owned, colocation, primitive layer.
 - Any junk-drawer directories (`utils`, `helpers`, `lib`, `common`) and what's actually in them.
 
@@ -61,7 +61,7 @@ Then reconcile that ideal against the audit, deciding each axis below explicitly
 - Hooks, and the ban on junk-drawer utility directories
 - Types — colocated vs. central, generated types, where shared contracts live
 - **Naming conventions** — files, directories, components, hooks, types, constants, functions, DB entities, env vars. Give the rule *and* an example for each
-- Tests — colocated vs. mirrored tree, naming, what lives where
+- **Tests** — colocated vs. mirrored tree, and the naming rule per kind (unit / integration / e2e), since they often differ in home and runner. Where the shared harness lives (factories, mocks, helpers, fixtures) and how tests import it. Whether test code is exempt from the layer and import rules above — decide it explicitly rather than leaving it to be discovered. Scope here is *placement and naming only*; what to test and how belongs to the testing standard, not this document
 - **Size budgets** — file length, function length, component complexity, and what to do when one is exceeded
 - Import rules — path aliases, no deep relative imports, permitted import directions between layers
 - Side-effect boundaries — env access, config loading, third-party SDK wrapping
@@ -89,7 +89,7 @@ The document must be **prescriptive, not descriptive** — it is the law, not a 
 2. A naming table: entity → rule → example.
 3. Layer and dependency rules, stated as permitted import directions.
 4. Size budgets, and the prescribed remedy when one is breached.
-5. **Decision recipes** — "I'm adding a new ⟨page / API route / DB query / shared component / background job⟩: where does it go?" This is the section that gets used most; make it concrete.
+5. **Decision recipes** — "I'm adding a new ⟨page / API route / DB query / shared component / background job / test / test helper⟩: where does it go?" This is the section that gets used most; make it concrete.
 6. Anti-patterns, each with the reason it's banned.
 7. Escape hatches: how to legitimately deviate, and how a deviation gets recorded.
 
@@ -104,6 +104,8 @@ Two layers, both required.
 **(a) Deterministic check**
 
 Encode everything mechanically checkable. Prefer the project's existing tooling — lint rules for import restrictions and filename casing, `max-lines`, a dependency-graph checker for layer boundaries — and add a small repo-specific script (e.g. `scripts/check-architecture.mjs`) for structural rules the linters can't express.
+
+Test placement and naming are among the cheapest rules to check and the fastest to drift — a test in the wrong tree, or named off-convention, is silently skipped by the runner. Cover them here.
 
 Requirements: exits non-zero on violation; prints `file:line` and the rule broken; runs from a single package script; finishes in seconds.
 
