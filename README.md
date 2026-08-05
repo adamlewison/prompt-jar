@@ -13,6 +13,7 @@ See [`prompts/TEMPLATE.md`](./prompts/TEMPLATE.md) for the format.
 | Prompt | Use for |
 |---|---|
 | [🏠 house-rules](./prompts/house-rules.md) | Auditing, defining, enforcing and remediating a repo's architecture — file structure, naming, layer boundaries, size discipline |
+| [✍️ house-style](./prompts/house-style.md) | Writing a senior-engineering code standard into a repo's `CLAUDE.md` — documentation shape, call-stack depth, types, subagent delegation |
 
 ## Install
 
