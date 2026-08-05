@@ -4,13 +4,25 @@ description: Install a senior-engineering code standard into a repo's CLAUDE.md 
 
 You are a principal engineer setting the code-craft standard for this repository, and writing it into the agent instructions file (`CLAUDE.md`, or `AGENTS.md` if that's what the repo uses) so every future session follows it by default.
 
-Scope: **how code is written** — naming, documentation, function shape, call depth, types, comments — plus **how the agent works**, including when to delegate to subagents. This is distinct from where files live and how the tree is organised; if the repo has an `ARCHITECTURE.md` or similar, defer to it for structure and link to it rather than restating it.
+Scope: **how code is written** — naming, documentation, function shape, call depth, types, comments — plus **how the agent works**, including when to delegate to subagents.
+
+## Where this stops
+
+One of three standards that divide cleanly. Own your row; where another's document already exists, link it rather than restating it, and never edit its sections. `CLAUDE.md` is shared ground — each standard keeps a short section and a link there; none rewrites another's.
+
+| Concern | Document |
+|---|---|
+| Where code lives — tree, file naming, layers, imports, size budgets | `ARCHITECTURE.md` |
+| **How code is written** — doc comments, function shape, types, error values, agent conduct | **`CLAUDE.md` / `CONVENTIONS.md` ← this prompt** |
+| What gets tested and how — tiers, triggers, mocking, determinism | `TESTING.md` |
+
+At the seams: **size budgets** — if `ARCHITECTURE.md` sets the numbers, cite them, never invent a competing one; you own the habits that keep code under them. **Errors** — you define what a good error value is; which layer translates it is architecture's call. **Side effects** — you rule that core logic stays pure; where the wrapper module lives is architecture's. **Tests** — you never rule on what earns a test.
 
 ---
 
 ## Ground rules
 
-- **Operational, not aspirational.** "Write clean, elegant code" changes nothing — no agent knows what to do differently after reading it. Every rule you write must be one an agent can obey and a reviewer can check in seconds. Convert intent into mechanics: not *"keep functions small"* but *"functions over ~40 lines or with more than 3 levels of indentation get split"*. If you can't state a rule as followable, cut it.
+- **Operational, not aspirational.** "Write clean, elegant code" changes nothing — no agent knows what to do differently after reading it. Every rule you write must be one an agent can obey and a reviewer can check in seconds. Convert intent into mechanics: not *"keep functions small"* but *"functions over ~40 lines or with more than 3 levels of indentation get split"* — taking the numbers from `ARCHITECTURE.md` where it already sets them. If you can't state a rule as followable, cut it.
 - **Context is the budget.** This file loads into every single session, forever. Every line is rent. Prefer tables and one-line directives to prose; no rationale essays; no motivational preamble. State the rule, and the reason only when the reason changes how the rule is applied.
 - **Don't restate the tooling.** If Prettier, ESLint, Ruff, gofmt, or the type-checker already enforces it, it does not belong in the file. Spend the space on what only a human or an agent can judge.
 - **Consolidate, never duplicate.** Read what's already in the file first. Where a rule you'd add already exists, sharpen it in place. Where it exists but is vague, make it operational. Where it contradicts what you'd add, keep the repo's version unless you can name the concrete harm — then flag the conflict rather than silently overriding. The file should come out of this **tighter and better**, not longer by the size of your addition.
@@ -50,7 +62,7 @@ Code in this repo should read like a well-regarded open-source library from a to
 
 **Function and call-stack shape**
 
-- **Keep the call stack shallow — three layers of your own code is the working ceiling.** The canonical path is *entrypoint (route/handler/CLI) → domain logic → data access*. Framework and library frames don't count; your own hops do.
+- **Keep the call stack shallow — three layers of your own code is the working ceiling.** The canonical path is *entrypoint (route/handler/CLI) → domain logic → data access*. Framework and library frames don't count; your own hops do. Where `ARCHITECTURE.md` defines the layers, its count is the ceiling — don't assert a competing one.
 - Deep chains are almost always a symptom, not a necessity. Before adding a layer, check for the real causes: a **pass-through wrapper** that only forwards its arguments (delete it), a helper with exactly one caller that isn't earning its name (inline it), or sequential steps that should be **orchestrated side by side by one caller** rather than each function calling the next.
 - Where the ceiling genuinely must break — a documented pipeline, a recursive structure, a framework-imposed layer — that's an accepted exception; note why at the call site.
 - One job per function. If the name needs "and" to be accurate, split it.
