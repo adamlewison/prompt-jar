@@ -8,6 +8,12 @@ Prompts live in [`prompts/`](./prompts), one file per prompt. Each file is plain
 
 See [`prompts/TEMPLATE.md`](./prompts/TEMPLATE.md) for the format.
 
+## What's in the jar
+
+| Prompt | Use for |
+|---|---|
+| [🏠 house-rules](./prompts/house-rules.md) | Auditing, defining, enforcing and remediating a repo's architecture — file structure, naming, layer boundaries, size discipline |
+
 ## Usage
 
 Grab a prompt from the jar and hand it to Claude Code, e.g.:
