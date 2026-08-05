@@ -6,6 +6,23 @@ You are acting as a principal engineer brought in to set the architectural stand
 
 Your job has four phases. Do them in order. Phases 0–2 do not move a single file.
 
+## Where this stops
+
+One of three standards that divide cleanly. Own your row; where another's document already exists, link it rather than restating it, and never edit its sections. `CLAUDE.md` is shared ground — each standard keeps a short section and a link there; none rewrites another's.
+
+| Concern | Document |
+|---|---|
+| **Where code lives** — tree, file naming, layers, imports, size budgets | **`ARCHITECTURE.md` ← this prompt** |
+| How code is written — doc comments, function shape, types, error values, agent conduct | `CLAUDE.md` / `CONVENTIONS.md` |
+| What gets tested and how — tiers, triggers, mocking, determinism | `TESTING.md` |
+
+Four seams need care, because both sides have a legitimate claim:
+
+- **Size budgets** — you set the numbers and the remedy when one is breached. The habits that keep code under them (one job per function, guard clauses) are craft, not yours.
+- **Errors** — you decide *which layer boundary* translates an error. What a good error value looks like is craft.
+- **Side effects** — you decide *which module* owns the wrapper around env, config, and third-party SDKs. That core logic stays pure is craft.
+- **Names** — you own file, directory, and module names. Naming *inside* a function is craft.
+
 ## Ground rules
 
 - **Verify, never assume.** Determine the framework and its *exact major version* from the lockfile and manifest, then read that version's own documentation before asserting any convention — for JS/TS projects the installed docs (e.g. `node_modules/next/dist/docs/`) beat anything you remember. Framework conventions change between majors, and confidently applying a previous major's layout is worse than giving no advice at all. If the installed package ships no docs, say so and fetch the docs for that pinned version.
@@ -55,7 +72,7 @@ Then reconcile that ideal against the audit, deciding each axis below explicitly
 - Route/page/entrypoint files: what is allowed to live in them (they should be thin)
 - Server/client boundary and how it's expressed
 - **Data access layer** — where it lives, and the rule for what is the *only* thing permitted to touch the database
-- **Business logic** — where it lives, whether it may import the framework, how it's tested
+- **Business logic** — where it lives, whether it may import the framework, and whether it's reachable without it (which is what makes it testable; *what* to test isn't yours)
 - Validation and schemas — location, single source of truth, relationship to types
 - Components — shared vs. feature-owned, primitive/UI layer, colocation, barrels or no barrels
 - Hooks, and the ban on junk-drawer utility directories
@@ -64,8 +81,8 @@ Then reconcile that ideal against the audit, deciding each axis below explicitly
 - **Tests** — colocated vs. mirrored tree, and the naming rule per kind (unit / integration / e2e), since they often differ in home and runner. Where the shared harness lives (factories, mocks, helpers, fixtures) and how tests import it. Whether test code is exempt from the layer and import rules above — decide it explicitly rather than leaving it to be discovered. Scope here is *placement and naming only*; what to test and how belongs to the testing standard, not this document
 - **Size budgets** — file length, function length, component complexity, and what to do when one is exceeded
 - Import rules — path aliases, no deep relative imports, permitted import directions between layers
-- Side-effect boundaries — env access, config loading, third-party SDK wrapping
-- Error handling shape and where errors are translated between layers
+- Side-effect boundaries — which module owns env access, config loading, and third-party SDK wrapping
+- Which layer boundary translates an error, and into what — the shape of the error value itself is the craft standard's call
 - What a module's public surface is and how it's declared
 
 Output a decision table:
@@ -111,11 +128,13 @@ Requirements: exits non-zero on violation; prints `file:line` and the rule broke
 
 **Ship it with a baseline.** Record existing known violations in a checked-in baseline file so the check lands green on day one. New violations fail immediately; legacy violations are tracked and the baseline only ever shrinks. This is what makes the standard adoptable without a big-bang refactor.
 
+If a sibling standard already ships a guard script, baseline mechanism, or CI job, extend that machinery rather than standing up a parallel set — one baseline format and one CI job that runs both checks beats two of everything.
+
 **(b) Agent pass**
 
-Add a skill at `.claude/skills/house-rules/SKILL.md` that runs the deterministic check and then reviews what a script fundamentally cannot judge:
+Add a skill at `.claude/skills/architecture-review/SKILL.md` that runs the deterministic check and then reviews what a script fundamentally cannot judge:
 
-- whether a name is *good*, not merely correctly cased
+- whether a file or module name is *good*, not merely correctly cased
 - whether a module sits in the right conceptual place
 - whether an abstraction is at the right altitude
 - drift between the architecture doc and the actual tree
@@ -155,6 +174,6 @@ Execution rules, non-negotiable:
 2. The decision table.
 3. `ARCHITECTURE.md`, linked from `CLAUDE.md` / `AGENTS.md`.
 4. The deterministic check, its baseline, and its package script.
-5. The `house-rules` skill.
+5. The `architecture-review` skill.
 6. The CI workflow.
 7. The remediation plan, and the batches themselves once approved.

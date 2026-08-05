@@ -6,7 +6,19 @@ You are a principal engineer setting the testing standard for this repository, a
 
 The goal is a **small, trusted suite**, not a large one: fast, deterministic, and made almost entirely of tests that would catch a real bug. Test count is a cost, not a score.
 
-Scope: what gets tested and what deliberately doesn't, how each kind of test is written, the runner and lint setup, and the enforcement that holds the line across sessions. Where test files live and what they're named defers to the repo's `ARCHITECTURE.md` if it has one.
+Scope: what gets tested and what deliberately doesn't, how each kind of test is written, the runner and lint setup, and the enforcement that holds the line across sessions.
+
+## Where this stops
+
+One of three standards that divide cleanly. Own your row; where another's document already exists, link it rather than restating it, and never edit its sections. `CLAUDE.md` is shared ground — each standard keeps a short section and a link there; none rewrites another's.
+
+| Concern | Document |
+|---|---|
+| Where code lives — tree, file naming, layers, imports, size budgets | `ARCHITECTURE.md` |
+| How code is written — doc comments, function shape, types, error values, agent conduct | `CLAUDE.md` / `CONVENTIONS.md` |
+| **What gets tested and how** — tiers, triggers, mocking, determinism | **`TESTING.md` ← this prompt** |
+
+At the seams: **where test files live and what they're named** is architecture's call — follow `ARCHITECTURE.md` if it exists; if it doesn't, follow whatever the codebase already does, and where that's inconsistent take the ecosystem default and flag it as provisional rather than quietly setting law that isn't yours to set. **Test code quality** is yours, not the craft standard's; tests have their own bar, set below. Where a test can only be written by mocking internal code, that's a design finding — report it, but fixing the production code is the craft standard's territory, not something to solve with a mock.
 
 ---
 
@@ -156,6 +168,8 @@ Three layers.
 - Prints test count and test-to-source ratio on every run, so suite growth is visible rather than discovered a year later.
 
 **Ship it with a baseline** of the violations that exist today, so it lands green. New violations fail immediately; the baseline only ever shrinks.
+
+If a sibling standard already ships a guard script, baseline mechanism, or CI job, extend that machinery rather than standing up a parallel set — one baseline format and one CI job that runs both checks beats two of everything.
 
 **(c) Agent pass** — a skill at `.claude/skills/test-review/SKILL.md` that runs the guard script and then judges what no script can:
 
