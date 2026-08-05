@@ -14,6 +14,7 @@ See [`prompts/TEMPLATE.md`](./prompts/TEMPLATE.md) for the format.
 |---|---|
 | [⚖️ lay-down-the-law](./prompts/lay-down-the-law.md) | Auditing, defining, enforcing and remediating a repo's architecture — file structure, naming, layer boundaries, size discipline |
 | [🚀 level-up](./prompts/level-up.md) | Writing a senior-engineering code standard into a repo's `CLAUDE.md` — documentation shape, call-stack depth, types, subagent delegation |
+| [🧪 prove-it](./prompts/prove-it.md) | Setting a repo's testing strategy — a deliberately small, risk-targeted suite, one runner, reference tests to copy, and the lint/CI enforcement that keeps it consistent |
 
 ## Install
 
